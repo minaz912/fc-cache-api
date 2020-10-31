@@ -26,4 +26,27 @@ export class CacheEntryService {
 
     return buildPaginationObject<'_id', ICacheEntry>(data, '_id');
   }
+
+  static async set(
+    key: string,
+    value: string,
+    expiryDateTime: Date
+  ): Promise<ICacheEntry> {
+    const existingCacheEntry = await CacheEntryModel.findOne({ key });
+
+    if (!existingCacheEntry) {
+      const newCacheEntry = await new CacheEntryModel({
+        key,
+        value,
+        expiresAt: expiryDateTime,
+      }).save();
+
+      return newCacheEntry.toJSON();
+    }
+
+    existingCacheEntry.value = value;
+    existingCacheEntry.expiresAt = expiryDateTime;
+    await existingCacheEntry.save();
+    return existingCacheEntry;
+  }
 }

@@ -51,3 +51,15 @@ export function mapCacheEntryToDto(cacheEntry: ICacheEntry): ICacheEntryDto {
     expiresAt: cacheEntry.expiresAt.toISOString(),
   };
 }
+
+export function generateCacheExpiryTimestamp(
+  now: Date,
+  ttlInSecs: number
+): Date {
+  // we should not mutate the input, so we clone it
+  const clonedDate = new Date(now.getTime());
+  const newTimestamp = clonedDate.setSeconds(
+    clonedDate.getSeconds() + ttlInSecs
+  );
+  return new Date(newTimestamp);
+}

@@ -83,4 +83,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    post:
+      x-eov-operation-handler: cacheEntry.controller
+      description: |
+        Add or update a cache entry by key
+      operationId: addOrUpdateCacheEntry
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key:
+                  type: string
+                value:
+                  type: string
+                ttl:
+                  type: number
+              required:
+                - key
+                - value
+        required: true
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CacheEntry'
 
