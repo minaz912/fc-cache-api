@@ -37,7 +37,7 @@ export function getCursor(after: string | undefined): string | null {
   return typeof after === 'string' ? after : null;
 }
 
-export function getTTL(ttlInSecs: number | undefined): number {
+export function getTTL(ttlInSecs?: number | undefined): number {
   return typeof ttlInSecs === 'number'
     ? ttlInSecs
     : config.getCacheOptions().defaultTTLInSecs;
@@ -62,4 +62,27 @@ export function generateCacheExpiryTimestamp(
     clonedDate.getSeconds() + ttlInSecs
   );
   return new Date(newTimestamp);
+}
+
+export function generateRandomString(length?: number): string {
+  const defaultStringLength = 10;
+  const charPool =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  let strLength = length || defaultStringLength;
+
+  const rv: string[] = [];
+  while (strLength > 0) {
+    rv.push(charPool.charAt(Math.floor(Math.random() * charPool.length)));
+    strLength -= 1;
+  }
+
+  return rv.join('');
+}
+
+export function getDateDifferenceInSecs(
+  firstOccurrence: Date,
+  secondOccurrence: Date
+): number {
+  return (secondOccurrence.getTime() - firstOccurrence.getTime()) / 1000;
 }

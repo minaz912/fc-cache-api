@@ -47,6 +47,26 @@ export class CacheEntryService {
     existingCacheEntry.value = value;
     existingCacheEntry.expiresAt = expiryDateTime;
     await existingCacheEntry.save();
+
     return existingCacheEntry;
+  }
+
+  static async get(key: string): Promise<ICacheEntry | null> {
+    const existingEntry = await CacheEntryModel.findOne({
+      key,
+      expiresAt: { $gt: new Date() },
+    }).lean();
+
+    return existingEntry;
+  }
+
+  static async resetTTLByKey(
+    key: string,
+    newExpiryDateTime: Date
+  ): Promise<void> {
+    await CacheEntryModel.updateOne(
+      { key },
+      { $set: { expiresAt: newExpiryDateTime } }
+    );
   }
 }
