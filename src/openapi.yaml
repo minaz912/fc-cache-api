@@ -133,6 +133,13 @@ paths:
                 $ref: '#/components/schemas/Error'
 
   /cache/{key}:
+    parameters:
+      - in: path
+        name: key
+        schema:
+          type: string
+        required: true
+        description: Key of the cache entry to get
     get:
       x-eov-operation-handler: cacheEntry.controller
       description: |
