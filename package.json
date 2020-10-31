@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "A simple Cache API",
   "main": "src/index.ts",
+  "engines": {
+    "node": "12.17.0",
+    "npm": "6.14.8"
+  },
   "scripts": {
     "start": "ts-node src/index.ts",
     "build": "tsc",
