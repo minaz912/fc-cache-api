@@ -10,7 +10,7 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "build": "tsc",
-    "start:prod": "npm run build && node dist/main.js",
+    "start:prod": "NODE_ENV=production npm run build && cp src/openapi.yaml dist/src && NODE_ENV=production node dist/src/index.js",
     "test": "jest --runInBand --forceExit"
   },
   "author": "Mina Beshay",
