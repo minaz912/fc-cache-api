@@ -32,9 +32,9 @@ class AppConfig {
   }
 
   public isProduction() {
-    const mode = this.getValue('MODE', false);
+    const mode = this.getValue('NODE_ENV', false);
 
-    return mode !== 'DEV';
+    return mode !== 'development';
   }
 
   public getDBURI(): string {
