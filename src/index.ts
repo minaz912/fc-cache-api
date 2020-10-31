@@ -1,8 +1,10 @@
+import { resolve } from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import { createConnection as createDBConnection } from './config/db';
 import { config } from './config/environment';
+import { initOpenApiValidatorMiddleware } from './middleware/openApi.middleware';
 
 export const app = express();
 
@@ -13,6 +15,8 @@ app.use(bodyParser.json());
 app.use(cors());
 
 createDBConnection(config.getDBURI());
+
+initOpenApiValidatorMiddleware(app, resolve(__dirname));
 
 app.get('/', (_req, res) => {
   res.send('Server is running');

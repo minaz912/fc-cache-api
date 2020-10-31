@@ -1,0 +1,86 @@
+openapi: '3.0.0'
+info:
+  version: 1.0.0
+  title: Cache API
+  description: A simple Cache API
+  termsOfService: http://swagger.io/terms/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: /api
+components:
+  schemas:
+    CacheEntry:
+      properties:
+        id:
+          type: string
+        key:
+          type: string
+        value:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - key
+        - value
+        - expiresAt
+    PaginatedCacheEntry:
+      properties:
+        data:
+          type: object
+          properties:
+            entries:
+              type: array
+              default: []
+              items:
+                $ref: '#/components/schemas/CacheEntry'
+
+            next:
+              type: string
+          required:
+            - entries
+      required:
+        - data
+    Error:
+      properties:
+        message:
+          type: string
+      required:
+        - message
+
+paths:
+  /cache:
+    get:
+      x-eov-operation-handler: cacheEntry.controller
+      description: |
+        List Cache entries
+      operationId: listCacheEntries
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: number
+          required: false
+        - name: after
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCacheEntry'
+
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
