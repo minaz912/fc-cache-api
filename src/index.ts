@@ -9,6 +9,10 @@ import { initOpenApiValidatorMiddleware } from './middleware/openApi.middleware'
 import { loadDocumentSync } from './utils';
 import { Logger } from './logger';
 
+process.on('unhandledRejection', (reason) => {
+  Logger.log(`[App] - Unhandled Rejection at: ${reason}`);
+});
+
 export const app = express();
 
 const port = config.getPort();
