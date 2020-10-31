@@ -17,6 +17,7 @@ export class CacheEntryService {
     cursor: string | null
   ): Promise<{ entries: ICacheEntry[]; cursor: string | null }> {
     const data = await CacheEntryModel.find({
+      // QUESTION: should we use a timestamp as the cursor?
       ...(cursor && { _id: { $gt: cursor } }),
       // only consider non-expired entries
       expiresAt: { $lt: new Date() },

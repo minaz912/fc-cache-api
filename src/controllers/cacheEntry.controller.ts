@@ -17,6 +17,7 @@ export async function listCacheEntries(req: Request, res: Response) {
   const pageSize = getPageSize(limit as number | undefined);
   const cursor = getCursor(after as string | undefined);
 
+  // TODO: reset TTL of each hit
   const entryList = await CacheEntryService.list(pageSize, cursor);
 
   return res.json({
