@@ -49,7 +49,7 @@ export class CacheEntryService {
     existingCacheEntry.expiresAt = expiryDateTime;
     await existingCacheEntry.save();
 
-    return existingCacheEntry;
+    return existingCacheEntry.toJSON();
   }
 
   static async get(key: string): Promise<ICacheEntry | null> {
