@@ -27,10 +27,8 @@ export function loadDocumentSync(file: string): any {
   return YAML.parseDocument(readFileSync(file, 'utf8'));
 }
 
-export function getPageSize(limit: string | undefined): number {
-  return typeof limit === 'string'
-    ? Number.parseInt(limit, 10)
-    : DEFAULT_PAGE_SIZE;
+export function getPageSize(limit: number | undefined): number {
+  return typeof limit === 'number' ? limit : DEFAULT_PAGE_SIZE;
 }
 
 export function getCursor(after: string | undefined): string | null {
