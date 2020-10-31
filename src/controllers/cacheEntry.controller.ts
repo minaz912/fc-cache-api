@@ -11,8 +11,17 @@ import {
   mapCacheEntryToDto,
 } from '../utils';
 import { config } from '../config/environment';
+import { ICacheEntryDto } from '../dtos/cacheEntry.dto';
 
-export async function listCacheEntries(req: Request, res: Response) {
+export async function listCacheEntries(
+  req: Request,
+  res: Response<{
+    data: {
+      entries: ICacheEntryDto[];
+      cursor: string | null;
+    };
+  }>
+) {
   const { limit, after } = req.query;
 
   const pageSize = getPageSize(limit as number | undefined);
@@ -33,7 +42,10 @@ export async function listCacheEntries(req: Request, res: Response) {
   });
 }
 
-export async function addOrUpdateCacheEntry(req: Request, res: Response) {
+export async function addOrUpdateCacheEntry(
+  req: Request,
+  res: Response<{ data: ICacheEntryDto }>
+) {
   const { key, value, ttl } = req.body;
 
   const entryTTLInSecs = getTTL(ttl as number | undefined);
@@ -45,7 +57,12 @@ export async function addOrUpdateCacheEntry(req: Request, res: Response) {
   return res.status(201).json({ data: mapCacheEntryToDto(newEntry) });
 }
 
-export async function getCacheEntryByKey(req: Request, res: Response) {
+export async function getCacheEntryByKey(
+  req: Request,
+  res: Response<{
+    data: string;
+  }>
+) {
   const { key } = req.params;
 
   const existingEntry = await CacheEntryService.get(key);
@@ -105,7 +122,10 @@ export async function getCacheEntryByKey(req: Request, res: Response) {
   });
 }
 
-export async function dropCacheEntryByKey(req: Request, res: Response) {
+export async function dropCacheEntryByKey(
+  req: Request,
+  res: Response<void | { data: null }>
+) {
   const { key } = req.params;
 
   const existingEntry = await CacheEntryService.get(key);
