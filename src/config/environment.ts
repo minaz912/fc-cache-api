@@ -2,6 +2,11 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+interface CacheOptions {
+  defaultTTLInSecs: number;
+  limitCount: number;
+}
+
 class AppConfig {
   constructor(private env: { [k: string]: string | undefined }) {
     this.env = env;
@@ -34,6 +39,18 @@ class AppConfig {
 
   public getDBURI(): string {
     return this.getValue('MONGODB_URI');
+  }
+
+  public getCacheOptions(): CacheOptions {
+    return {
+      defaultTTLInSecs:
+        Number.parseInt(
+          this.getValue('DEFAULT_CACHE_ENTRY_TTL_IN_SECS', false),
+          10
+        ) || 500,
+      limitCount:
+        Number.parseInt(this.getValue('CACHE_LIMIT_COUNT', false), 10) || 10,
+    };
   }
 }
 
