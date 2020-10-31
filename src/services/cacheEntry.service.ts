@@ -28,6 +28,10 @@ export class CacheEntryService {
     return buildPaginationObject<'_id', ICacheEntry>(data, '_id');
   }
 
+  static async count(): Promise<number> {
+    return CacheEntryModel.countDocuments();
+  }
+
   static async set(
     key: string,
     value: string,
