@@ -1,15 +1,14 @@
-import mongoose from 'mongoose';
+import mongoose, { Connection } from 'mongoose';
 
-export async function createConnection() {
-  const dbConnectionResult = await mongoose.connect(
-    'mongodb://localhost:27017/cache',
-    {
-      useNewUrlParser: true,
-      useFindAndModify: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-    }
-  );
+export async function createConnection(
+  DBConnectionURI: string
+): Promise<Connection> {
+  const dbConnectionResult = await mongoose.connect(DBConnectionURI, {
+    useNewUrlParser: true,
+    useFindAndModify: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  });
 
   return dbConnectionResult.connection;
 }

@@ -2,16 +2,17 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import { createConnection as createDBConnection } from './config/db';
+import { config } from './config/environment';
 
 export const app = express();
 
-const port: number = 3000;
+const port = config.getPort();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-createDBConnection();
+createDBConnection(config.getDBURI());
 
 app.get('/', (_req, res) => {
   res.send('Server is running');
