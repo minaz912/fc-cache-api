@@ -15,10 +15,10 @@
 - Run mongodb on port 27017 (or set MONGODB_URI in .env to customize the connection string)
 - run `npm start`
 
-## Testing & CI/CD
+## Testing & Coverage
 
-- Run `npm test` to run all tests. Alternatively you can run `npm run test:server` to only run server tests, `npm run test:client` to run client tests, or `npm run test:e2e` to run the end-to-end tests
-- Every code push is tested and built via CI, if autodeploy is configured for the branch, it is deployed to the specified environment in CI configuration
+- Run `npm test` to run tests and collect coverage (you need to have MongoDB running)
+- You can find the collected coverage in the generated `coverage` directory
 
 ## Config & .env
 
