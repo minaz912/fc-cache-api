@@ -2,8 +2,11 @@ import { Express } from 'express';
 import * as OpenApiValidator from 'express-openapi-validator';
 import { loadDocumentSync } from '../utils';
 
-export function initOpenApiValidatorMiddleware(app: Express, basePath: string) {
-  const swaggerDoc = loadDocumentSync(`${basePath}/openapi.yaml`);
+export function initOpenApiValidatorMiddleware(
+  app: Express,
+  basePath: string,
+  swaggerDoc: any
+) {
   app.use(
     OpenApiValidator.middleware({
       apiSpec: swaggerDoc,

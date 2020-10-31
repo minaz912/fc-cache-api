@@ -1,10 +1,12 @@
 import { resolve } from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
+import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
 import { createConnection as createDBConnection } from './config/db';
 import { config } from './config/environment';
 import { initOpenApiValidatorMiddleware } from './middleware/openApi.middleware';
+import { loadDocumentSync } from './utils';
 
 export const app = express();
 
@@ -16,7 +18,15 @@ app.use(cors());
 
 createDBConnection(config.getDBURI());
 
-initOpenApiValidatorMiddleware(app, resolve(__dirname));
+const basePath = resolve(__dirname);
+const swaggerDoc = loadDocumentSync(`${basePath}/openapi.yaml`);
+
+initOpenApiValidatorMiddleware(app, basePath, swaggerDoc);
+
+// Serve API Docs in non-production mode
+if (!config.isProduction()) {
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+}
 
 app.get('/', (_req, res) => {
   res.send('Server is running');
