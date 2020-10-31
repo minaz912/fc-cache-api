@@ -118,7 +118,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /cache/{id}:
+  /cache/{key}:
     get:
       x-eov-operation-handler: cacheEntry.controller
       description: |
