@@ -13,7 +13,16 @@
 - Create a .env file at the project root (see .env.example as an example, or for the purposes of this project, rename it to .env)
 - Customize any variables you need in .env
 - Run mongodb on port 27017 (or set MONGODB_URI in .env to customize the connection string)
-- run `npm start`
+- Run `npm start`
+
+## Viewing the API Docs
+
+- You can view the API docs on `/api-docs`
+
+## Building and running production
+
+- Run `npm run build`, you'll see the transpiled output in the `dist` directory
+- You can alternatively just run `npm run start:prod` to run in production mode (note the API docs are not served in production mode)
 
 ## Testing & Coverage
 
