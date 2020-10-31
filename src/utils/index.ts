@@ -2,6 +2,8 @@ import { readFileSync } from 'fs';
 import YAML from 'yaml';
 import { config } from '../config/environment';
 import { DEFAULT_PAGE_SIZE } from '../constants';
+import { ICacheEntryDto } from '../dtos/cacheEntry.dto';
+import { ICacheEntry } from '../models/cacheEntry.model';
 
 interface PaginationObject<T> {
   entries: T[];
@@ -39,4 +41,13 @@ export function getTtl(ttl: number | undefined): number {
   return typeof ttl === 'number'
     ? ttl
     : config.getCacheOptions().defaultTTLInSecs;
+}
+
+export function mapCacheEntryToDto(cacheEntry: ICacheEntry): ICacheEntryDto {
+  return {
+    id: String(cacheEntry._id),
+    key: cacheEntry.key,
+    value: cacheEntry.value,
+    expiresAt: cacheEntry.expiresAt.toISOString(),
+  };
 }
