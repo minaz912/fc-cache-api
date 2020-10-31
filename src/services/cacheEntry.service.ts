@@ -21,7 +21,7 @@ export class CacheEntryService {
       // QUESTION: should we use a timestamp as the cursor?
       ...(cursor && { _id: { $gt: cursor } }),
       // only consider non-expired entries
-      expiresAt: { $lt: new Date() },
+      expiresAt: { $gt: new Date() },
     })
       .limit(pageSize)
       .lean();
