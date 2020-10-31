@@ -7,6 +7,7 @@ import { createConnection as createDBConnection } from './config/db';
 import { config } from './config/environment';
 import { initOpenApiValidatorMiddleware } from './middleware/openApi.middleware';
 import { loadDocumentSync } from './utils';
+import { Logger } from './logger';
 
 export const app = express();
 
@@ -33,5 +34,5 @@ app.get('/', (_req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`🚀 Express server listening on http://127.0.0.1:${port}`);
+  Logger.log(`[App] - 🚀 Express server listening on http://127.0.0.1:${port}`);
 });
