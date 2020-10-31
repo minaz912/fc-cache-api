@@ -111,4 +111,44 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CacheEntry'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
+  /cache/{id}:
+    get:
+      description: |
+        Get Cache entry by key
+      operationId: getCacheEntryByKey
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                required:
+                  - data
+        # Does this match requirements?
+        '404':
+          description: NOT_FOUND
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                    nullable: true
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'

@@ -33,5 +33,5 @@ export async function addOrUpdateCacheEntry(req: Request, res: Response) {
 
   const newEntry = await CacheEntryService.set(key, value, newExpiryDateTime);
 
-  return res.status(201).json({ data: mapCacheEntryToDto(newEntry).value });
+  return res.status(201).json({ data: mapCacheEntryToDto(newEntry) });
 }
