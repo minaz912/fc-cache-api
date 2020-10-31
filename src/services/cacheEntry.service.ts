@@ -1,3 +1,4 @@
+import { Logger } from '../logger';
 import { CacheEntryModel, ICacheEntry } from '../models/cacheEntry.model';
 import { buildPaginationObject } from '../utils';
 
@@ -63,6 +64,25 @@ export class CacheEntryService {
     }).lean();
 
     return existingEntry;
+  }
+
+  static async dropOldestEntries(numberOfEntriesToDrop: number): Promise<void> {
+    const oldestEntriesKeys = await CacheEntryModel.find({})
+      .sort({ expiresAt: 1 })
+      .limit(numberOfEntriesToDrop)
+      .distinct('key');
+
+    if (oldestEntriesKeys.length === 0) {
+      Logger.debug('[CacheEntryService] - dropOldestEntry::No entries to drop');
+      return;
+    }
+
+    Logger.debug(
+      '[CacheEntryService] - dropOldestEntry::Dropping entries with keys',
+      oldestEntriesKeys
+    );
+
+    await CacheEntryModel.deleteMany({ key: { $in: oldestEntriesKeys } });
   }
 
   static async dropByKey(key: string): Promise<void> {

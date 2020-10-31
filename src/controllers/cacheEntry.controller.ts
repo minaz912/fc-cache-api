@@ -10,6 +10,7 @@ import {
   getTTL,
   mapCacheEntryToDto,
 } from '../utils';
+import { config } from '../config/environment';
 
 export async function listCacheEntries(req: Request, res: Response) {
   const { limit, after } = req.query;
@@ -54,6 +55,18 @@ export async function getCacheEntryByKey(req: Request, res: Response) {
 
     const entryTTLInSecs = getTTL();
     const newExpiryDateTime = generateCacheExpiryTimestamp(now, entryTTLInSecs);
+
+    const totalEntryCount = await CacheEntryService.count();
+    const cacheLimitCount = config.getCacheOptions().limitCount;
+    /**
+     * Check if we're at or above the limit
+     * Here we're checking if we're at or "above" because the limit can
+     * change between process runs
+     */
+    const differenceAboveLimit = totalEntryCount - cacheLimitCount;
+    if (differenceAboveLimit >= 0) {
+      await CacheEntryService.dropOldestEntries(differenceAboveLimit + 1);
+    }
 
     const newEntry = await CacheEntryService.set(
       key,
