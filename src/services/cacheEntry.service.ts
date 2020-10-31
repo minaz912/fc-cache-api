@@ -61,6 +61,14 @@ export class CacheEntryService {
     return existingEntry;
   }
 
+  static async dropByKey(key: string): Promise<void> {
+    await CacheEntryModel.deleteOne({ key });
+  }
+
+  static async dropAll(): Promise<void> {
+    await CacheEntryModel.deleteMany({});
+  }
+
   static async resetTTLByKey(
     key: string,
     newExpiryDateTime: Date

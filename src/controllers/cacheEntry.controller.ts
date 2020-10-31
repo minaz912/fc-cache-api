@@ -79,3 +79,21 @@ export async function getCacheEntryByKey(req: Request, res: Response) {
     data: existingEntry.value,
   });
 }
+
+export async function dropCacheEntryByKey(req: Request, res: Response) {
+  const { key } = req.params;
+
+  const existingEntry = await CacheEntryService.get(key);
+
+  if (!existingEntry) {
+    return res.status(404).json({ data: null });
+  }
+
+  return res.sendStatus(204);
+}
+
+export async function dropAllCacheEntries(req: Request, res: Response) {
+  await CacheEntryService.dropAll();
+
+  return res.sendStatus(204);
+}

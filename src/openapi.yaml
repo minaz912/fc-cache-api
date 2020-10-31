@@ -117,6 +117,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    delete:
+      x-eov-operation-handler: cacheEntry.controller
+      description: |
+        Drop all Cache Entries
+      operationId: dropAllCacheEntries
+      responses:
+        '204':
+          description: Entries dropped and not returned
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /cache/{key}:
     get:
@@ -136,9 +150,33 @@ paths:
                     type: string
                 required:
                   - data
-        # Does this match requirements? since we're generating dummy data
+        # QUESTION: Does this match requirements anymore? since we're generating dummy data
         '404':
-          description: NOT_FOUND
+          description: Entry not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                    nullable: true
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      x-eov-operation-handler: cacheEntry.controller
+      description: |
+        Drop Cache entry by key
+      operationId: dropCacheEntryByKey
+      responses:
+        '204':
+          description: Entry dropped and not returned
+        '404':
+          description: Entry not found
           content:
             application/json:
               schema:
