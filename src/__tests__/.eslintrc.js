@@ -1,3 +1,5 @@
-"env": {
-  "jest/globals": true
-}
+module.exports = {
+  env: {
+    'jest/globals': true,
+  },
+};
