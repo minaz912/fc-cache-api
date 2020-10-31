@@ -1,5 +1,7 @@
 import { readFileSync } from 'fs';
 import YAML from 'yaml';
+import { config } from '../config/environment';
+import { DEFAULT_PAGE_SIZE } from '../constants';
 
 interface PaginationObject<T> {
   entries: T[];
@@ -23,4 +25,20 @@ export function buildPaginationObject<
 
 export function loadDocumentSync(file: string): any {
   return YAML.parseDocument(readFileSync(file, 'utf8'));
+}
+
+export function getPageSize(limit: string | undefined): number {
+  return typeof limit === 'string'
+    ? Number.parseInt(limit, 10)
+    : DEFAULT_PAGE_SIZE;
+}
+
+export function getCursor(after: string | undefined): string | null {
+  return typeof after === 'string' ? after : null;
+}
+
+export function getTtl(ttl: number | undefined): number {
+  return typeof ttl === 'number'
+    ? ttl
+    : config.getCacheOptions().defaultTTLInSecs;
 }
