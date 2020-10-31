@@ -37,9 +37,9 @@ export function getCursor(after: string | undefined): string | null {
   return typeof after === 'string' ? after : null;
 }
 
-export function getTtl(ttl: number | undefined): number {
-  return typeof ttl === 'number'
-    ? ttl
+export function getTTL(ttlInSecs: number | undefined): number {
+  return typeof ttlInSecs === 'number'
+    ? ttlInSecs
     : config.getCacheOptions().defaultTTLInSecs;
 }
 

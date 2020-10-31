@@ -4,7 +4,7 @@ import {
   generateCacheExpiryTimestamp,
   getCursor,
   getPageSize,
-  getTtl,
+  getTTL,
   mapCacheEntryToDto,
 } from '../utils';
 
@@ -27,9 +27,9 @@ export async function listCacheEntries(req: Request, res: Response) {
 export async function addOrUpdateCacheEntry(req: Request, res: Response) {
   const { key, value, ttl } = req.body;
 
-  const entryTtlInSecs = getTtl(ttl as number | undefined);
+  const entryTTLInSecs = getTTL(ttl as number | undefined);
   const now = new Date();
-  const newExpiryDateTime = generateCacheExpiryTimestamp(now, entryTtlInSecs);
+  const newExpiryDateTime = generateCacheExpiryTimestamp(now, entryTTLInSecs);
 
   const newEntry = await CacheEntryService.set(key, value, newExpiryDateTime);
 
