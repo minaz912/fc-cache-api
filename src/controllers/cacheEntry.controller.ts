@@ -61,7 +61,9 @@ export async function getCacheEntryByKey(req: Request, res: Response) {
       newExpiryDateTime
     );
 
-    return newEntry.value;
+    return res.json({
+      data: newEntry.value,
+    });
   }
 
   Logger.info('[Controller] - getCacheEntryByKey::Cache hit');
