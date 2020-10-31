@@ -21,6 +21,10 @@ export async function listCacheEntries(req: Request, res: Response) {
   // TODO: reset TTL of each hit
   const entryList = await CacheEntryService.list(pageSize, cursor);
 
+  Logger.debug(
+    `[CacheController] - listCacheEntries::Returning ${entryList.entries.length} entries`
+  );
+
   return res.json({
     data: {
       entries: entryList.entries.map(mapCacheEntryToDto),
@@ -49,7 +53,7 @@ export async function getCacheEntryByKey(req: Request, res: Response) {
   const now = new Date();
 
   if (!existingEntry) {
-    Logger.info('[Controller] - getCacheEntryByKey::Cache miss');
+    Logger.info('[CacheController] - getCacheEntryByKey::Cache miss');
 
     const randomValue = generateRandomString();
 
@@ -74,12 +78,16 @@ export async function getCacheEntryByKey(req: Request, res: Response) {
       newExpiryDateTime
     );
 
+    Logger.debug(
+      `[CacheController] - listCacheEntries::Returning newly created entry with key ${newEntry.key} and value ${newEntry.value}`
+    );
+
     return res.json({
       data: newEntry.value,
     });
   }
 
-  Logger.info('[Controller] - getCacheEntryByKey::Cache hit');
+  Logger.info('[CacheController] - getCacheEntryByKey::Cache hit');
 
   const entryTTLInSecs = getDateDifferenceInSecs(
     existingEntry.createdAt,
@@ -87,6 +95,10 @@ export async function getCacheEntryByKey(req: Request, res: Response) {
   );
   const newExpiryDateTime = generateCacheExpiryTimestamp(now, entryTTLInSecs);
   await CacheEntryService.resetTTLByKey(existingEntry.key, newExpiryDateTime);
+
+  Logger.debug(
+    `[CacheController] - listCacheEntries::Returning existing entry with key ${existingEntry.key} and value ${existingEntry.value}`
+  );
 
   return res.json({
     data: existingEntry.value,
