@@ -1,6 +1,5 @@
 import { Express } from 'express';
 import * as OpenApiValidator from 'express-openapi-validator';
-import { loadDocumentSync } from '../utils';
 
 export function initOpenApiValidatorMiddleware(
   app: Express,
